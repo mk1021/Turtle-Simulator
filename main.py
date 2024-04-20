@@ -20,6 +20,8 @@ current_line_width = 0
 pen_state = tk.IntVar()
 pen_state.set(1) # true
 
+sequence_list = []
+
 
 ## CURSROR
 
@@ -39,7 +41,7 @@ def change_line_color():
     global current_line_color
 
     chosen_color = colorchooser.askcolor(title="Choose color")
-    print(chosen_color)
+    # print(chosen_color)
 
     current_line_color = chosen_color[1]
 
@@ -107,6 +109,10 @@ def turn_right(angle):
 
 # Sequences
 def set_sequence():
+    global sequence_list
+    
+    # append every button pressed into list
+
     pass
 
 # Loops
@@ -114,6 +120,20 @@ def repeat():
     pass
 
 
+## START AND STOP
+
+def go():
+    pass
+
+def reset():
+    global coords
+    global cursor
+
+    coords = [150, 150]
+    canvas.delete("all")  # Clear the canvas
+    cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+
+    
 ## BUTTONS
 
 # Movement Controls
@@ -140,5 +160,8 @@ line_width = tk.Scale(window, variable=w, from_=1, to=10, orient=tk.HORIZONTAL, 
 # Sequences & Loops
 tk.Button(window, text="[ Sequence ]", command=set_sequence).grid(column=0, row=5)
 tk.Button(window, text="Repeat", command=repeat).grid(column=1, row=5)
+
+tk.Button(window, text="GO", command=go, bg="green").grid(column=2, row=6)
+tk.Button(window, text="RESET", command=reset, bg="red").grid(column=0, row=6)
 
 window.mainloop()
