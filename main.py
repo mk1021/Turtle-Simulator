@@ -17,7 +17,8 @@ current_line_color = "black"
 current_line_width = 0
 
 # SPEC: Turtle should be able to move without drawing a line - use a toggle for pen drawing
-pen_draw = True
+pen_state = tk.IntVar()
+pen_state.set(1) # true
 
 
 ## CURSROR
@@ -29,47 +30,6 @@ cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, co
 # Move Cursor
 def update_cursor():
     canvas.coords(cursor, coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size)
-
-
-## MOVEMENT CONTROLS
-
-# Move Up
-def move_up():
-    if pen_draw:
-        canvas.create_line(coords[0], coords[1], coords[0], coords[1] + 10, fill=current_line_color, width=current_line_width)
-    coords[1] += 10
-    update_cursor()
-
-# Move Down
-def move_down():
-    if pen_draw:
-        canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 10, fill=current_line_color, width=current_line_width)
-    coords[1] -= 10
-    update_cursor()
-
-# Move Left
-def move_left():
-    if pen_draw:
-        canvas.create_line(coords[0], coords[1], coords[0] - 10, coords[1], fill=current_line_color, width=current_line_width)
-    coords[0] -= 10
-    update_cursor()
-
-# Move Right
-def move_right():
-    if pen_draw:
-        canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=current_line_width)
-    coords[0] += 10
-    update_cursor()
-
-# Turn Left
-def turn_left():
-    # press the button followed by a number which is equal to the number of degrees it turns
-    pass
-
-# Turn Right
-def turn_right():
-    # press the button followed by a number which is equal to the number of degrees it turns
-    pass
 
 
 ## LINE COLOR & THICKNESS
@@ -91,9 +51,67 @@ def change_line_width(val):
 ## PEN UP/DOWN
 
 # Toggle Pen
-def toggle_pen():
-    global pen_draw
-    pen_draw = not pen_draw
+def toggle_pen_state():
+    global pen_state
+    pen_state.set(1 - pen_state.get())
+
+
+## MOVEMENT CONTROLS
+
+# Move Up
+def move_up():
+    if pen_state.get() == 1:
+        canvas.create_line(coords[0], coords[1], coords[0], coords[1] + 10, fill=current_line_color, width=current_line_width)
+    coords[1] += 10
+    update_cursor()
+
+# Move Down
+def move_down():
+    if pen_state.get() == 1:
+        canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 10, fill=current_line_color, width=current_line_width)
+    coords[1] -= 10
+    update_cursor()
+
+# Move Left
+def move_left():
+    if pen_state.get() == 1:
+        canvas.create_line(coords[0], coords[1], coords[0] - 10, coords[1], fill=current_line_color, width=current_line_width)
+    coords[0] -= 10
+    update_cursor()
+
+# Move Right
+def move_right():
+    if pen_state.get() == 1:
+        canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=current_line_width)
+    coords[0] += 10
+    update_cursor()
+
+# Get Angle for Rotation
+def get_angle(var):
+    pass
+
+# Turn Left
+def turn_left(angle):
+    # press the button followed by a number which is equal to the number of degrees it turns
+    
+    pass
+
+# Turn Right
+def turn_right(angle):
+    # press the button followed by a number which is equal to the number of degrees it turns
+    pass
+
+
+
+## SEQUENCING AND LOOPS
+
+# Sequences
+def set_sequence():
+    pass
+
+# Loops
+def repeat():
+    pass
 
 
 ## BUTTONS
@@ -110,10 +128,17 @@ tk.Button(window, text="↱", command=turn_left).grid(column=2, row=2)
 tk.Button(window, text="Change Color", command=change_line_color).grid(column=0, row=3)
 
 # Pen Up/Down
-tk.Button(window, text="Pen Up/Down", command=toggle_pen).grid(column=1, row=3)
+# tk.Button(window, text="Pen Up/Down", command=toggle_pen).grid(column=1, row=3)
+tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up", command=toggle_pen_state).grid(column=1, row=3)
+
+# Choose Angle Input
 
 # Line Thickness Slider
-w = DoubleVar()
+w = tk.DoubleVar()
 line_width = tk.Scale(window, variable=w, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=change_line_width).grid(column=0, row=4, columnspan=2)
+
+# Sequences & Loops
+tk.Button(window, text="[ Sequence ]", command=set_sequence).grid(column=0, row=5)
+tk.Button(window, text="Repeat", command=repeat).grid(column=1, row=5)
 
 window.mainloop()
