@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import colorchooser
+from tkinter import *
 
 ## INITIALISATION
 
@@ -12,6 +13,8 @@ canvas.grid(column=0, row=0, columnspan=4)
 
 # SPEC: Turtle should be able to change line colour
 current_line_color = "black"
+
+current_line_width = 0
 
 # SPEC: Turtle should be able to move without drawing a line - use a toggle for pen drawing
 pen_draw = True
@@ -33,28 +36,28 @@ def update_cursor():
 # Move Up
 def move_up():
     if pen_draw:
-        canvas.create_line(coords[0], coords[1], coords[0], coords[1] + 10, fill=current_line_color, width=1)
+        canvas.create_line(coords[0], coords[1], coords[0], coords[1] + 10, fill=current_line_color, width=current_line_width)
     coords[1] += 10
     update_cursor()
 
 # Move Down
 def move_down():
     if pen_draw:
-        canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 10, fill=current_line_color, width=1)
+        canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 10, fill=current_line_color, width=current_line_width)
     coords[1] -= 10
     update_cursor()
 
 # Move Left
 def move_left():
     if pen_draw:
-        canvas.create_line(coords[0], coords[1], coords[0] - 10, coords[1], fill=current_line_color, width=1)
+        canvas.create_line(coords[0], coords[1], coords[0] - 10, coords[1], fill=current_line_color, width=current_line_width)
     coords[0] -= 10
     update_cursor()
 
 # Move Right
 def move_right():
     if pen_draw:
-        canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=1)
+        canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=current_line_width)
     coords[0] += 10
     update_cursor()
 
@@ -69,7 +72,7 @@ def turn_right():
     pass
 
 
-## LINE COLOR 
+## LINE COLOR & THICKNESS
 
 # Change Line Color
 def change_line_color():
@@ -79,6 +82,10 @@ def change_line_color():
     print(chosen_color)
 
     current_line_color = chosen_color[1]
+
+def change_line_width(val):
+    global current_line_width
+    current_line_width = val
 
 
 ## PEN UP/DOWN
@@ -100,10 +107,13 @@ tk.Button(window, text="↰", command=turn_left).grid(column=1, row=2)
 tk.Button(window, text="↱", command=turn_left).grid(column=2, row=2)
 
 # Change Color
-tk.Button(window, text="Change Color", command=change_line_color).grid(column=2, row=3)
+tk.Button(window, text="Change Color", command=change_line_color).grid(column=0, row=3)
 
 # Pen Up/Down
 tk.Button(window, text="Pen Up/Down", command=toggle_pen).grid(column=1, row=3)
 
+# Line Thickness Slider
+w = DoubleVar()
+line_width = tk.Scale(window, variable=w, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=change_line_width).grid(column=0, row=4, columnspan=2)
 
 window.mainloop()
