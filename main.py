@@ -17,27 +17,46 @@ current_line_color = "black"
 pen_draw = True
 
 
+## CURSROR
+
+# Initialise Cursor
+cursor_size = 4
+cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+
+# Move Cursor
+def update_cursor():
+    canvas.coords(cursor, coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size)
+
+
 ## MOVEMENT CONTROLS
 
 # Move Up
 def move_up():
-    canvas.create_line(coords[0], coords[1], coords[0], coords[1] + 10, fill=current_line_color, width=1)
+    if pen_draw:
+        canvas.create_line(coords[0], coords[1], coords[0], coords[1] + 10, fill=current_line_color, width=1)
     coords[1] += 10
+    update_cursor()
 
 # Move Down
 def move_down():
-    canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 10, fill=current_line_color, width=1)
+    if pen_draw:
+        canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 10, fill=current_line_color, width=1)
     coords[1] -= 10
+    update_cursor()
 
 # Move Left
 def move_left():
-    canvas.create_line(coords[0], coords[1], coords[0] - 10, coords[1], fill=current_line_color, width=1)
+    if pen_draw:
+        canvas.create_line(coords[0], coords[1], coords[0] - 10, coords[1], fill=current_line_color, width=1)
     coords[0] -= 10
+    update_cursor()
 
 # Move Right
 def move_right():
-    canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=1)
+    if pen_draw:
+        canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=1)
     coords[0] += 10
+    update_cursor()
 
 # Turn Left
 def turn_left():
