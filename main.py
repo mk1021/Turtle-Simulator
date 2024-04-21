@@ -144,7 +144,11 @@ def set_sequence():
 
 # Loops
 def repeat():
-    pass
+    global cursor
+
+    canvas.delete("all")
+    cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+    go()
 
 
 ## STORING COMMANDS
@@ -154,7 +158,7 @@ def store_command(command):
     print('storing command')
 
 
-## GO AND RESET
+## GO 
 
 def go():
     global go_flag
@@ -168,21 +172,21 @@ def go():
         window.update_idletasks()
         window.after(500)
 
-    list_of_commands.clear()
+    print(list_of_commands)
+    # list_of_commands.clear()
 
-# RESET
-def reset():
+
+## CLEAR MEMORY
+
+def clear_memory():
     global coords
     global cursor
 
-    if go_flag:
-        coords = [150, 150]
-        canvas.delete("all")  # Clear the canvas
-        cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
-        list_of_commands.clear()
-        print('reset')
-    else:
-        store_command(reset)
+    coords = [150, 150]
+    canvas.delete("all") 
+    cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+    list_of_commands.clear()
+    print('clear memory')
 
     
 ## BUTTONS
@@ -212,8 +216,8 @@ line_width = tk.Scale(window, variable=w, from_=1, to=10, orient=tk.HORIZONTAL, 
 tk.Button(window, text="[ Sequence ]", command=set_sequence).grid(column=0, row=5)
 tk.Button(window, text="Repeat", command=repeat).grid(column=1, row=5)
 
-# Go & Reset
+# Go & clear_memory
 tk.Button(window, text="GO", command=go, bg="green").grid(column=2, row=6)
-tk.Button(window, text="RESET", command=reset, bg="red").grid(column=0, row=6)
+tk.Button(window, text="CM", command=clear_memory, bg="red").grid(column=0, row=6)
 
 window.mainloop()
