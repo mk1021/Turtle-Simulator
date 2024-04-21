@@ -170,11 +170,16 @@ def reset():
     global coords
     global cursor
 
-    store_command(reset)
+    if go_flag:
+        coords = [150, 150]
+        canvas.delete("all")  # Clear the canvas
+        cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+        list_of_commands.clear()
+        print('reset')
+    else:
+        store_command(reset)
 
-    coords = [150, 150]
-    canvas.delete("all")  # Clear the canvas
-    cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+    
 
     
 ## BUTTONS
@@ -184,11 +189,11 @@ tk.Button(window, text="↑", command=lambda: store_command(move_up)).grid(colum
 tk.Button(window, text="↓", command=lambda: store_command(move_down)).grid(column=1, row=1)
 tk.Button(window, text="←", command=lambda: store_command(move_left)).grid(column=2, row=1)
 tk.Button(window, text="→", command=lambda: store_command(move_right)).grid(column=3, row=1)
-tk.Button(window, text="↰", command=turn_left).grid(column=1, row=2)
-tk.Button(window, text="↱", command=turn_left).grid(column=2, row=2)
+tk.Button(window, text="↰", command=lambda: store_command(turn_right)).grid(column=1, row=2)
+tk.Button(window, text="↱", command=lambda: store_command(turn_left)).grid(column=2, row=2)
 
 # Change Color
-tk.Button(window, text="Change Color", command=change_line_color).grid(column=0, row=3)
+tk.Button(window, text="Change Color", command=lambda: store_command(change_line_color)).grid(column=0, row=3)
 
 # Pen Up/Down
 # tk.Button(window, text="Pen Up/Down", command=toggle_pen).grid(column=1, row=3)
@@ -198,7 +203,7 @@ tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up",
 
 # Line Thickness Slider
 w = tk.DoubleVar()
-line_width = tk.Scale(window, variable=w, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=change_line_width).grid(column=0, row=4, columnspan=2)
+line_width = tk.Scale(window, variable=w, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=lambda: store_command(change_line_width)).grid(column=0, row=4, columnspan=2)
 
 # Sequences & Loops
 tk.Button(window, text="[ Sequence ]", command=set_sequence).grid(column=0, row=5)
