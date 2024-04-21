@@ -75,7 +75,7 @@ def move_up():
         if pen_state.get() == 1:
             canvas.create_line(coords[0], coords[1], coords[0], coords[1] + 10, fill=current_line_color, width=current_line_width)
         coords[1] += 10
-        update_cursor()
+        # update_cursor()
     else:
         store_command(move_up)
 
@@ -85,7 +85,7 @@ def move_down():
         if pen_state.get() == 1:
             canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 10, fill=current_line_color, width=current_line_width)
         coords[1] -= 10
-        update_cursor()
+        # update_cursor()
     else:
         store_command(move_down)
     
@@ -97,7 +97,7 @@ def move_left():
         if pen_state.get() == 1:
             canvas.create_line(coords[0], coords[1], coords[0] - 10, coords[1], fill=current_line_color, width=current_line_width)
         coords[0] -= 10
-        update_cursor()
+        # update_cursor()
     else:
         store_command(move_left)
     
@@ -109,7 +109,7 @@ def move_right():
         if pen_state.get() == 1:
             canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=current_line_width)
         coords[0] += 10
-        update_cursor()
+        # update_cursor()
     else:
         store_command(move_right)
 
@@ -147,11 +147,14 @@ def repeat():
     pass
 
 
-## START AND STOP
+## STORING COMMANDS
 
 def store_command(command):
     list_of_commands.append(command)
     print('storing command')
+
+
+## GO AND RESET
 
 def go():
     global go_flag
@@ -161,11 +164,13 @@ def go():
 
     for command in list_of_commands:
         command()
-        window.after(5)
-
+        update_cursor()  
+        window.update_idletasks()
+        window.after(500)
 
     list_of_commands.clear()
 
+# RESET
 def reset():
     global coords
     global cursor
@@ -178,8 +183,6 @@ def reset():
         print('reset')
     else:
         store_command(reset)
-
-    
 
     
 ## BUTTONS
