@@ -52,12 +52,15 @@ def change_line_color():
 
     chosen_color = colorchooser.askcolor(title="Choose color")
     # print(chosen_color)
-
     current_line_color = chosen_color[1]
+    
 
-def change_line_width(val):
+def change_line_width():
     global current_line_width
-    current_line_width = val
+
+    if go_flag:
+        current_line_width = int(line_width.get())
+        print(current_line_width)
 
 
 ## PEN UP/DOWN
@@ -105,7 +108,6 @@ def move_left():
 
     
 
-
 # Move Right
 def move_right():
     if go_flag:
@@ -113,7 +115,6 @@ def move_right():
             canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=current_line_width)
         coords[0] += 10
         # update_cursor()
-
 
 
 
@@ -212,8 +213,8 @@ tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up",
 # Choose Angle Input
 
 # Line Thickness Slider
-w = tk.DoubleVar()
-line_width = tk.Scale(window, variable=w, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=lambda w: store_command(lambda: change_line_width(w.get()))).grid(column=0, row=4, columnspan=2)
+line_width = tk.Scale(window, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=lambda w: store_command(lambda: change_line_width()))
+line_width.grid(column=0, row=4, columnspan=2)
 
 # Sequences & Loops
 tk.Button(window, text="[ Sequence ]", command=set_sequence).grid(column=0, row=5)
