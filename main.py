@@ -28,12 +28,16 @@ list_of_commands = []
 # Storing Sequences
 sequence_list = []
 
+# Current Orientation (0: right, 90: up, 180: left, 270: down)
+current_orientation = 90
+
 
 ## CURSROR
 
 # Initialise Cursor
 cursor_size = 4
 cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+# canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 5, fill=current_line_color, width=1)
 
 # Move Cursor
 def update_cursor():
@@ -73,8 +77,9 @@ def toggle_pen_state():
 def move_up():
     if go_flag:
         if pen_state.get() == 1:
-            canvas.create_line(coords[0], coords[1], coords[0], coords[1] + 10, fill=current_line_color, width=current_line_width)
-        coords[1] += 10
+            canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 10, fill=current_line_color, width=current_line_width)
+        # coords[1] += 10
+        coords[1] -= 10
         # update_cursor()
         
 
@@ -82,8 +87,9 @@ def move_up():
 def move_down():
     if go_flag:
         if pen_state.get() == 1:
-            canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 10, fill=current_line_color, width=current_line_width)
-        coords[1] -= 10
+            canvas.create_line(coords[0], coords[1], coords[0], coords[1] + 10, fill=current_line_color, width=current_line_width)
+        # coords[1] -= 10
+        coords[1] += 10
         # update_cursor()
 
     
@@ -169,6 +175,7 @@ def go():
         window.after(500)
 
     print(list_of_commands)
+    go_flag = False
     # list_of_commands.clear()
 
 
