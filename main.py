@@ -52,12 +52,15 @@ def change_line_color():
 
     chosen_color = colorchooser.askcolor(title="Choose color")
     # print(chosen_color)
-
     current_line_color = chosen_color[1]
 
-def change_line_width(val):
+
+def change_line_width(new_width):
     global current_line_width
-    current_line_width = val
+
+    if go_flag:
+        current_line_width = int(new_width)
+        print(current_line_width)
 
 
 ## PEN UP/DOWN
@@ -155,8 +158,8 @@ def repeat():
 
 ## STORING COMMANDS
 
-def store_command(command):
-    list_of_commands.append(command)
+def store_command(command, *args):
+    list_of_commands.append((command, *args))
     print('Storing command:', command)
 
 
@@ -168,11 +171,11 @@ def go():
 
     print('now in go function')
 
-    for command in list_of_commands:
-        command()
+    for command, *args in list_of_commands:
+        command(*args)
         update_cursor()  
         window.update_idletasks()
-        window.after(500)
+        window.after(250)
 
     print(list_of_commands)
     go_flag = False
@@ -212,8 +215,8 @@ tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up",
 # Choose Angle Input
 
 # Line Thickness Slider
-w = tk.DoubleVar()
-line_width = tk.Scale(window, variable=w, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=lambda w: store_command(lambda: change_line_width(w.get()))).grid(column=0, row=4, columnspan=2)
+line_width = tk.Scale(window, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=lambda slider_val: store_command(change_line_width, slider_val))
+line_width.grid(column=0, row=4, columnspan=2)
 
 # Sequences & Loops
 tk.Button(window, text="[ Sequence ]", command=set_sequence).grid(column=0, row=5)
