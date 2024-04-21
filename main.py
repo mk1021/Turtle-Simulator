@@ -62,9 +62,9 @@ def change_line_width(val):
 def toggle_pen_state():
     global pen_state
     
-    store_command(toggle_pen_state)
-
-    pen_state.set(1 - pen_state.get())
+    # store_command(toggle_pen_state)
+    if go_flag:
+        pen_state.set(1 - pen_state.get())
 
 
 ## MOVEMENT CONTROLS
@@ -76,8 +76,7 @@ def move_up():
             canvas.create_line(coords[0], coords[1], coords[0], coords[1] + 10, fill=current_line_color, width=current_line_width)
         coords[1] += 10
         # update_cursor()
-    else:
-        store_command(move_up)
+        
 
 # Move Down
 def move_down():
@@ -86,8 +85,7 @@ def move_down():
             canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 10, fill=current_line_color, width=current_line_width)
         coords[1] -= 10
         # update_cursor()
-    else:
-        store_command(move_down)
+
     
     
 
@@ -98,8 +96,7 @@ def move_left():
             canvas.create_line(coords[0], coords[1], coords[0] - 10, coords[1], fill=current_line_color, width=current_line_width)
         coords[0] -= 10
         # update_cursor()
-    else:
-        store_command(move_left)
+
     
 
 
@@ -110,8 +107,7 @@ def move_right():
             canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=current_line_width)
         coords[0] += 10
         # update_cursor()
-    else:
-        store_command(move_right)
+
 
 
 
@@ -155,7 +151,7 @@ def repeat():
 
 def store_command(command):
     list_of_commands.append(command)
-    print('storing command')
+    print('Storing command:', command)
 
 
 ## GO 
@@ -204,7 +200,7 @@ tk.Button(window, text="Change Color", command=lambda: store_command(change_line
 
 # Pen Up/Down
 # tk.Button(window, text="Pen Up/Down", command=toggle_pen).grid(column=1, row=3)
-tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up", command=toggle_pen_state).grid(column=1, row=3)
+tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up", command=lambda: store_command(toggle_pen_state)).grid(column=1, row=3)
 
 # Choose Angle Input
 
