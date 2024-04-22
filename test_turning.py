@@ -176,22 +176,89 @@ def reset_orientation():
 # Set Angle for Rotation
 def set_angle():
     rotation_angle = angle_entry.get()
+    # print(rotation_angle)
     return rotation_angle
+
+
+# Set Orientation using Angle
+def set_orientation(trig_angle, coords):
+    if trig_angle == 90:
+        # move up
+        move_up()
+        print("move up")
+
+    elif trig_angle == 180:
+        # move left
+        move_left()
+        print("move left")
+
+    elif trig_angle == 270:
+        # move down
+        move_down()
+        print("move down")
+
+    elif trig_angle == 360:
+        # move right
+        move_right()
+        print("move right")
+
+    elif trig_angle > 360:
+        print("trig value is larger than a full circle")
+        set_orientation(trig_angle - 360) 
+
+    elif trig_angle > 0 and trig_angle < 90:
+        # first quadrant
+        print("first quadrant")
+        a = trig_angle
+        # - in y
+        y_end = coords[1] - (10 * math.cos(math.radians(a)))
+        # + in x
+        x_end = coords[0] + (10 * math.sin(math.radians(a)))
     
+    elif trig_angle > 90 and trig_angle < 180:
+        # second quadrant
+        print("second quadrant")
+        a = trig_angle - 90
+        # - in y
+        y_end = coords[1] - (10 * math.cos(math.radians(a)))
+        # - in x
+        x_end = coords[0] - (10 * math.sin(math.radians(a)))
+        
+    elif trig_angle > 180 and trig_angle < 270:
+        # third quadrant
+        print("third quadrant")
+        a = trig_angle - 180
+        # + in y
+        y_end = coords[1] + (10 * math.cos(math.radians(a)))
+        # - in x
+        x_end = coords[0] - (10 * math.sin(math.radians(a)))
+
+    elif trig_angle > 270 and trig_angle < 360:
+        # fourth quadrant
+        print("fourth quadrant")
+        a = trig_angle - 270
+        # + in y
+        y_end = coords[1] + (10 * math.cos(math.radians(a)))
+        # + in x
+        x_end = coords[0] + (10 * math.sin(math.radians(a)))
+
+    return x_end, y_end
+
+
 
 # Turn Left
-def turn_left(angle):
+def turn_left():
     # press the button followed by a number which is equal to the number of degrees it turns
-    if go_flag:
-        trig_angle = angle - current_orientation
-        if pen_state.get() == 1:
-            canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=current_line_width)
-        coords[0] -= 10 * math.sin(trig_angle)
-        coords[1] -= 10 * math.cos(trig_angle)
+    rotation_angle = angle_entry.get()
 
-        angle = set_angle()
-        # convert angle to degrees
-        current_orientation += angle
+    if go_flag:
+        x, y = set_orientation(int(rotation_angle)+90, coords)
+
+        if pen_state.get() == 1:
+            canvas.create_line(coords[0], coords[1], x, y, fill=current_line_color, width=current_line_width)
+        coords[0] = x
+        coords[1] = y
+
 
     
 
@@ -250,8 +317,8 @@ tk.Button(window, text="↑", command=lambda: store_command(move_up)).grid(colum
 tk.Button(window, text="↓", command=lambda: store_command(move_down)).grid(column=1, row=1)
 tk.Button(window, text="←", command=lambda: store_command(move_left)).grid(column=2, row=1)
 tk.Button(window, text="→", command=lambda: store_command(move_right)).grid(column=3, row=1)
-tk.Button(window, text="↰", command=lambda: store_command(turn_right)).grid(column=1, row=2)
-tk.Button(window, text="↱", command=lambda: store_command(turn_left)).grid(column=2, row=2)
+tk.Button(window, text="↰", command=lambda: store_command(turn_left)).grid(column=1, row=2)
+tk.Button(window, text="↱", command=lambda: store_command(turn_right)).grid(column=2, row=2)
 
 # Change Color
 tk.Button(window, text="Change Color", command=store_color_command).grid(column=0, row=3)
