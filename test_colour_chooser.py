@@ -15,7 +15,7 @@ canvas.grid(column=0, row=0, columnspan=4)
 current_line_color = "black"
 
 # Change Line Width
-current_line_width = 1
+current_line_width = 0
 
 # SPEC: Turtle should be able to move without drawing a line - use a toggle for pen drawing
 pen_state = tk.IntVar()
@@ -42,7 +42,6 @@ cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, co
 # Move Cursor
 def update_cursor():
     canvas.coords(cursor, coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size)
-
 
 
 
@@ -81,8 +80,13 @@ def go():
     # list_of_commands.clear()
 
 
-
 ## LINE COLOR & THICKNESS
+
+def choose_color():
+    chosen_color = colorchooser.askcolor(title="Choose color")
+    # print("chosen color:", chosen_color)
+    return chosen_color[1]
+
 
 # Change Line Color
 def change_line_color(new_color):
@@ -98,7 +102,7 @@ def change_line_width(new_width):
 
     if go_flag:
         current_line_width = int(new_width)
-        print(current_line_width)
+        # print(current_line_width)
 
 
 ## PEN UP/DOWN
@@ -134,6 +138,7 @@ def move_down():
         # update_cursor()
 
     
+    
 
 # Move Left
 def move_left():
@@ -144,6 +149,7 @@ def move_left():
         # update_cursor()
 
     
+
 
 # Move Right
 def move_right():
@@ -159,11 +165,13 @@ def move_right():
 def get_angle(var):
     pass
 
+
 # Turn Left
 def turn_left(angle):
     # press the button followed by a number which is equal to the number of degrees it turns
     
     pass
+
 
 # Turn Right
 def turn_right(angle):
@@ -196,12 +204,8 @@ def repeat():
 def clear_memory():
     global coords
     global cursor
-    global current_line_color
-    global current_line_width
 
     coords = [150, 150]
-    current_line_color = "black"
-    current_line_width = 1
     canvas.delete("all") 
     cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
     list_of_commands.clear()
