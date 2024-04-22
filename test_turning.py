@@ -177,12 +177,16 @@ def reset_orientation():
 def set_angle():
     rotation_angle = angle_entry.get()
     # print(rotation_angle)
-    return rotation_angle
+    return int(rotation_angle)
 
 
 # Set Orientation using Angle
 def set_orientation(trig_angle, coords):
-    if trig_angle == 90:
+    if trig_angle < 0:
+        print("trig value is too small", trig_angle)
+        set_orientation(trig_angle + 360, coords)
+
+    elif trig_angle == 90:
         # move up
         move_up()
         print("move up")
@@ -204,7 +208,8 @@ def set_orientation(trig_angle, coords):
 
     elif trig_angle > 360:
         print("trig value is larger than a full circle")
-        set_orientation(trig_angle - 360) 
+        set_orientation(trig_angle - 360, coords) 
+    
 
     elif trig_angle > 0 and trig_angle < 90:
         # first quadrant
@@ -248,11 +253,11 @@ def set_orientation(trig_angle, coords):
 
 # Turn Left
 def turn_left():
-    # press the button followed by a number which is equal to the number of degrees it turns
-    rotation_angle = angle_entry.get()
+    # choose the angle then click turn left
+    angle = set_angle()
 
     if go_flag:
-        x, y = set_orientation(int(rotation_angle)+90, coords)
+        x, y = set_orientation(current_orientation + angle, coords)
 
         if pen_state.get() == 1:
             canvas.create_line(coords[0], coords[1], x, y, fill=current_line_color, width=current_line_width)
@@ -263,9 +268,17 @@ def turn_left():
     
 
 # Turn Right
-def turn_right(angle):
-    # press the button followed by a number which is equal to the number of degrees it turns
-    pass
+def turn_right():
+    # choose the angle then click turn right
+    angle = set_angle()
+
+    if go_flag:
+        x, y = set_orientation(current_orientation - angle, coords)
+
+        if pen_state.get() == 1:
+            canvas.create_line(coords[0], coords[1], x, y, fill=current_line_color, width=current_line_width)
+        coords[0] = x
+        coords[1] = y
 
 
 
