@@ -68,7 +68,7 @@ def go():
     global go_flag
     go_flag = True
 
-    # print('now in go function')
+    print('now in go function')
 
     for command, *args in list_of_commands:
         command(*args)
@@ -200,14 +200,26 @@ def replay():
     go()
 
 
-def iterate():
+def set_iterations():
+    num = int(iterations.get())
+    print(num)
+    store_command(iterate, num)
+    print("storing iteration number")
+    return num
+
+
+def iterate(num_of_iterations):
     reset_vars()
+    print("iterating")
+    if go_flag:
+        for i in range(num_of_iterations):
+            for command, *args in list_of_commands:
+                command(*args)
+                update_cursor()  
+                window.update_idletasks()
+                window.after(250)
 
-    num_of_iterations = int(iterations.get())
-
-    for i in range(num_of_iterations):
-        go()
-
+            print(list_of_commands)
 
 
 
@@ -246,9 +258,10 @@ line_width.grid(column=0, row=4, columnspan=2)
 tk.Button(window, text="[ Sequence ]", command=set_sequence).grid(column=0, row=5)
 tk.Button(window, text="Replay", command=replay).grid(column=1, row=5)
 
-
-iterations = tk.Spinbox(window, from_=1, to=10, command=iterate)
-iterations.grid(column=2, row=4)
+tk.Label(window, text="Iterations:").grid(column=2, row=4)
+iterations = tk.Spinbox(window, from_=1, to=10)
+iterations.grid(column=3, row=4)
+tk.Button(window, text="Set Iteration", command=set_iterations, bg="grey").grid(column=3, row=5)
 
 # Go & clear_memory
 tk.Button(window, text="GO", command=go, bg="green").grid(column=2, row=6)
