@@ -201,7 +201,7 @@ def set_orientation(trig_angle, coords):
         move_down()
         print("move down")
 
-    elif trig_angle == 360:
+    elif trig_angle == 360 or trig_angle == 0:
         # move right
         move_right()
         print("move right")
@@ -253,8 +253,11 @@ def set_orientation(trig_angle, coords):
 
 # Turn Left
 def turn_left():
+    global current_orientation
     # choose the angle then click turn left
     angle = set_angle()
+    # current_orientation += angle
+    print(current_orientation)
 
     if go_flag:
         x, y = set_orientation(current_orientation + angle, coords)
@@ -269,8 +272,11 @@ def turn_left():
 
 # Turn Right
 def turn_right():
+    global current_orientation
     # choose the angle then click turn right
     angle = set_angle()
+    # current_orientation -= angle
+    print(current_orientation)
 
     if go_flag:
         x, y = set_orientation(current_orientation - angle, coords)
