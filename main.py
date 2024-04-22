@@ -81,6 +81,18 @@ def go():
     # list_of_commands.clear()
 
 
+## RESET VARIABLES
+
+def reset_vars():
+    global coords, cursor, current_line_color, current_line_width
+
+    coords = [150, 150]
+    current_line_color = "black"
+    current_line_width = 1
+    canvas.delete("all") 
+    cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+
+
 
 ## LINE COLOR & THICKNESS
 
@@ -183,27 +195,33 @@ def set_sequence():
     pass
 
 # Loops
-def repeat():
-    global cursor
+def replay():
+    # global coords, cursor, current_line_color, current_line_width
 
-    canvas.delete("all")
-    cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+    # coords = [150, 150]
+    # current_line_color = "black"
+    # current_line_width = 1
+    # canvas.delete("all") 
+    # cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+    reset_vars()
     go()
+
+
+def iterate():
+    global cursor
 
 
 ## CLEAR MEMORY
 
 def clear_memory():
-    global coords
-    global cursor
-    global current_line_color
-    global current_line_width
+    # global coords, cursor, current_line_color, current_line_width
 
-    coords = [150, 150]
-    current_line_color = "black"
-    current_line_width = 1
-    canvas.delete("all") 
-    cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+    # coords = [150, 150]
+    # current_line_color = "black"
+    # current_line_width = 1
+    # canvas.delete("all") 
+    # cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+    reset_vars()
     list_of_commands.clear()
     print('clear memory')
 
@@ -233,7 +251,8 @@ line_width.grid(column=0, row=4, columnspan=2)
 
 # Sequences & Loops
 tk.Button(window, text="[ Sequence ]", command=set_sequence).grid(column=0, row=5)
-tk.Button(window, text="Repeat", command=repeat).grid(column=1, row=5)
+tk.Button(window, text="Replay", command=replay).grid(column=1, row=5)
+tk.Spinbox(window, text="Iterate Program", command=iterate).grid(column=1, row=5)
 
 # Go & clear_memory
 tk.Button(window, text="GO", command=go, bg="green").grid(column=2, row=6)
