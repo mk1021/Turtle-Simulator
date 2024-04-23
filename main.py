@@ -96,7 +96,7 @@ def reset_vars():
     current_line_width = 1
     line_width.set(1)
     angle_entry.delete(0, END)
-    pen_state.set(0)
+    # pen_state.set(0)
     canvas.delete("all") 
     cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
 
@@ -317,6 +317,7 @@ def set_sequence():
 # Loops
 def replay():
     reset_vars()
+    window.after(500)
     go()
 
 
@@ -432,8 +433,8 @@ file_menu.add_command(label="Save as", command=reset_vars)
 file_menu.add_command(label="Exit", command=window.quit)
 help_menu = Menu(menubar, tearoff=0)
 menubar.add_cascade(label="Help", menu=help_menu)
-help_menu.add_command(label="Welcome", command=welcome_page)
-help_menu.add_command(label="Instructions", command=instructions)
+# help_menu.add_command(label="Welcome", command=welcome_page)
+# help_menu.add_command(label="Instructions", command=instructions)
 # help_menu.add_command(label="Privacy Statement", command=placeholder)
 
 window.mainloop()
