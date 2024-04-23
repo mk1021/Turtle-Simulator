@@ -24,14 +24,23 @@ current_line_width = 1
 
 current_orientation = 90
 
-angle = 190
+angle = 135
 
-trig_angle = angle + current_orientation
+if angle < 90:
+    diff = current_orientation - angle
+    trig_angle = current_orientation - diff
+elif angle > 90:
+    trig_angle = current_orientation - angle
+
 print(trig_angle)
 
 
 def set_orientation(trig_angle):
-    if trig_angle == 90:
+    if trig_angle < 0:
+        print("trig value is negative")
+        set_orientation(trig_angle + 360)
+    
+    elif trig_angle == 90:
         # move up
         x_end = coords[0]
         y_end = coords[1]-100
@@ -49,14 +58,14 @@ def set_orientation(trig_angle):
         y_end = coords[1]+100
         print("move down")
 
-    elif trig_angle == 360:
+    elif trig_angle == 360 or trig_angle == 0:
         # move right
         x_end = coords[0]+100
         y_end = coords[1]
         print("move right")
 
     elif trig_angle > 360:
-        print("trig value isn't valid")
+        print("trig value is more than a full circle")
         set_orientation(trig_angle - 360) 
 
 

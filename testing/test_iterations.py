@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import colorchooser
 from tkinter import *
-import math
 
 ## INITIALISATION
 
@@ -26,9 +25,6 @@ pen_state.set(1) # true
 go_flag = False
 list_of_commands = []
 
-# Storing Angles
-angles = []
-
 # Storing Sequences
 sequence_list = []
 
@@ -48,12 +44,13 @@ def update_cursor():
     canvas.coords(cursor, coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size)
 
 
+
+
 ## STORING COMMANDS
 
 def store_command(command, *args):
     list_of_commands.append((command, *args))
     print('Storing command:', command)
-
 
 # Store Change Color Command
 def store_color_command():
@@ -96,18 +93,6 @@ def reset_vars():
     cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
 
 
-## PEN UP/DOWN
-
-# Toggle Pen
-def toggle_pen_state():
-    global pen_state
-    
-    # store_command(toggle_pen_state)
-    if go_flag:
-        pen_state.set(1 - pen_state.get())
-
-
-
 
 ## LINE COLOR & THICKNESS
 
@@ -128,6 +113,16 @@ def change_line_width(new_width):
         print(current_line_width)
 
 
+## PEN UP/DOWN
+
+# Toggle Pen
+def toggle_pen_state():
+    global pen_state
+    
+    # store_command(toggle_pen_state)
+    if go_flag:
+        pen_state.set(1 - pen_state.get())
+
 
 ## MOVEMENT CONTROLS
 
@@ -139,7 +134,6 @@ def move_up():
         # coords[1] += 10
         coords[1] -= 10
         # update_cursor()
-        print(coords)
         
 
 # Move Down
@@ -172,144 +166,21 @@ def move_right():
         # update_cursor()
 
 
-# Reset Orientation 
-def reset_orientation():
-    global current_orientation
-    current_orientation = 90
 
-
-# Set Angle for Rotation
-def set_angle():
-    rotation_angle_str = angle_entry.get()
-    rotation_angle = int(rotation_angle_str)
-    #print(rotation_angle)
-    angles.append(rotation_angle)
-    print(angles)
-    angle_entry.delete(0, END)
-
-
-# Set Orientation using Angle
-def set_orientation(trig_angle, coords):
-    trig_angle %= 360
-    
-    x_end, y_end = coords
-
-    # if trig_angle < 0:
-    #     print("trig value is too small", trig_angle)
-    #     print(trig_angle + 360)
-    #     set_orientation(trig_angle + 360, coords)
-
-    if trig_angle == 90:
-        # move up
-        move_up()
-        print("move up")
-
-    elif trig_angle == 180:
-        # move left
-        move_left()
-        print("move left")
-
-    elif trig_angle == 270:
-        # move down
-        move_down()
-        print("move down")
-
-    elif trig_angle == 360 or trig_angle == 0:
-        # move right
-        move_right()
-        print("move right")
-
-    # elif trig_angle > 360:
-    #     print("trig value is larger than a full circle")
-    #     print(trig_angle - 360)
-    #     set_orientation(trig_angle - 360, coords) 
-    
-
-    elif 0 < trig_angle < 90:
-        # first quadrant
-        print("first quadrant")
-        a = trig_angle
-        # - in y
-        y_end = coords[1] - (10 * math.sin(math.radians(a)))
-        # + in x
-        x_end = coords[0] + (10 * math.cos(math.radians(a)))
-    
-    elif 90 < trig_angle < 180:
-        # second quadrant
-        print("second quadrant")
-        a = trig_angle - 90
-        # - in y
-        y_end = coords[1] - (10 * math.cos(math.radians(a)))
-        # - in x
-        x_end = coords[0] - (10 * math.sin(math.radians(a)))
-        
-    elif 180 < trig_angle < 270:
-        # third quadrant
-        print("third quadrant")
-        a = trig_angle - 180
-        # + in y
-        y_end = coords[1] + (10 * math.sin(math.radians(a)))
-        # - in x
-        x_end = coords[0] - (10 * math.cos(math.radians(a)))
-
-    elif 270 < trig_angle < 360:
-        # fourth quadrant
-        print("fourth quadrant")
-        a = trig_angle - 270
-        print(a)
-        # + in y
-        y_end = coords[1] + (10 * math.cos(math.radians(a)))
-        print(y_end)
-        # + in x
-        x_end = coords[0] + (10 * math.sin(math.radians(a)))
-        print(10 * math.sin(math.radians(a)))
-        print(x_end)
-
-    return x_end, y_end
-
-
+# Get Angle for Rotation
+def get_angle(var):
+    pass
 
 # Turn Left
-def turn_left():
-    global current_orientation
-    # choose the angle then click turn left
-    # angles = set_angle()
-    # current_orientation += angle - this is right but have to implement more stuff before using it
-    # print(current_orientation)
-    print("turning left")
-
-    if go_flag:
-        x, y = set_orientation(current_orientation + angles[0], coords)
-
-        if pen_state.get() == 1:
-            canvas.create_line(coords[0], coords[1], x, y, fill=current_line_color, width=current_line_width)
-        coords[0] = x
-        coords[1] = y
-
-        angles.append(angles.pop(0))
-        print(angles)
-
-
+def turn_left(angle):
+    # press the button followed by a number which is equal to the number of degrees it turns
+    
+    pass
 
 # Turn Right
-def turn_right():
-    global current_orientation
-    # choose the angle then click turn right
-    # angles = set_angle()
-    # current_orientation -= angle
-    # print(current_orientation)
-    print("turning right")
-
-    if go_flag:
-        x, y = set_orientation(current_orientation - angles[0], coords)
-
-        if pen_state.get() == 1:
-            canvas.create_line(coords[0], coords[1], x, y, fill=current_line_color, width=current_line_width)
-        coords[0] = x
-        coords[1] = y
-
-        angles.append(angles.pop(0))
-        print(angles)
+def turn_right(angle):
+    # press the button followed by a number which is equal to the number of degrees it turns
+    pass
 
 
 
@@ -351,7 +222,6 @@ def iterate(num_of_iterations):
 def clear_memory():
     reset_vars()
     list_of_commands.clear()
-    angles.clear()
     print('clear memory')
 
     
@@ -362,8 +232,8 @@ tk.Button(window, text="↑", command=lambda: store_command(move_up)).grid(colum
 tk.Button(window, text="↓", command=lambda: store_command(move_down)).grid(column=1, row=1)
 tk.Button(window, text="←", command=lambda: store_command(move_left)).grid(column=2, row=1)
 tk.Button(window, text="→", command=lambda: store_command(move_right)).grid(column=3, row=1)
-tk.Button(window, text="↰", command=lambda: store_command(turn_left)).grid(column=1, row=2)
-tk.Button(window, text="↱", command=lambda: store_command(turn_right)).grid(column=2, row=2)
+tk.Button(window, text="↰", command=lambda: store_command(turn_right)).grid(column=1, row=2)
+tk.Button(window, text="↱", command=lambda: store_command(turn_left)).grid(column=2, row=2)
 
 # Change Color
 tk.Button(window, text="Change Color", command=store_color_command).grid(column=0, row=3)
@@ -373,11 +243,6 @@ tk.Button(window, text="Change Color", command=store_color_command).grid(column=
 tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up", command=lambda: store_command(toggle_pen_state)).grid(column=1, row=3)
 
 # Choose Angle Input
-tk.Button(window, text="Angle:", command=set_angle).grid(column=2, row=3)
-angle_entry = tk.Entry(window)
-angle_entry.grid(column=3, row=3)
-
-tk.Button(window, text="Reset Orientation", command=reset_orientation).grid(column=3, row=2)
 
 # Line Thickness Slider
 line_width = tk.Scale(window, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=lambda slider_val: store_command(change_line_width, slider_val))
