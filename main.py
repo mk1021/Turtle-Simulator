@@ -420,4 +420,20 @@ pause_menu.menu.add_command(label="100 seconds", command=lambda: set_pause_durat
 tk.Button(window, text="GO", command=go, bg="green").grid(column=3, row=2)
 tk.Button(window, text="CM", command=clear_memory, bg="red").grid(column=0, row=2)
 
+# Menu Bar
+menubar = Menu(window)
+window.config(menu=menubar)
+
+# File Menu
+file_menu = Menu(menubar, tearoff=0)
+menubar.add_cascade(label="File", menu=file_menu)
+file_menu.add_command(label="New", command=reset_vars)
+file_menu.add_command(label="Save as", command=reset_vars)
+file_menu.add_command(label="Exit", command=window.quit)
+help_menu = Menu(menubar, tearoff=0)
+menubar.add_cascade(label="Help", menu=help_menu)
+help_menu.add_command(label="Welcome", command=welcome_page)
+help_menu.add_command(label="Instructions", command=instructions)
+# help_menu.add_command(label="Privacy Statement", command=placeholder)
+
 window.mainloop()
