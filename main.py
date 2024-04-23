@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import colorchooser
 from tkinter import *
 import math
+from tkinter import Menubutton, Menu
 
 ## INITIALISATION
 
@@ -93,6 +94,9 @@ def reset_vars():
     coords = [150, 150]
     current_line_color = "black"
     current_line_width = 1
+    line_width.set(1)
+    angle_entry.delete(0, END)
+    pen_state.set(0)
     canvas.delete("all") 
     cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
 
@@ -168,6 +172,13 @@ def move_right():
             canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=current_line_width)
         coords[0] += 10
         # update_cursor()
+
+
+
+# Reset Orientation 
+def reset_orientation():
+    global current_orientation
+    current_orientation = 90
 
 
 # Set Angle for Rotation
@@ -309,13 +320,33 @@ def replay():
     go()
 
 
-def iterate():
+def set_iterations():
+    num = int(iterations.get())
+    print(num)
+    store_command(iterate, num)
+    print("storing iteration number", num)
+    return num
+
+
+def iterate(num_of_iterations):
     reset_vars()
+    print("iterating")
+    if go_flag:
+        for i in range(num_of_iterations):
+            go()
 
-    num_of_iterations = int(iterations.get())
 
-    for i in range(num_of_iterations):
-        go()
+## PAUSE
+
+def pause(seconds):
+    into_ms = seconds * 1000
+    window.after(into_ms)
+
+
+# Select Pause Duration
+def set_pause_duration(seconds):
+    pause_menu.config(text=f"Pause Duration ({seconds} seconds)")
+    store_command(pause, seconds)
 
 
 
@@ -339,31 +370,54 @@ tk.Button(window, text="↰", command=lambda: store_command(turn_left)).grid(col
 tk.Button(window, text="↱", command=lambda: store_command(turn_right)).grid(column=2, row=2)
 
 # Change Color
-tk.Button(window, text="Change Color", command=store_color_command).grid(column=0, row=3)
+tk.Button(window, text="Change Color", command=store_color_command).grid(column=0, row=6)
 
 # Pen Up/Down
 # tk.Button(window, text="Pen Up/Down", command=toggle_pen).grid(column=1, row=3)
-tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up", command=lambda: store_command(toggle_pen_state)).grid(column=1, row=3)
+tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up", command=lambda: store_command(toggle_pen_state)).grid(column=3, row=6)
 
 # Choose Angle Input
 tk.Button(window, text="Angle:", command=set_angle).grid(column=2, row=3)
 angle_entry = tk.Entry(window)
 angle_entry.grid(column=3, row=3)
 
+tk.Button(window, text="Reset Orientation", command=reset_orientation).grid(column=0, row=3)
+
 # Line Thickness Slider
 line_width = tk.Scale(window, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=lambda slider_val: store_command(change_line_width, slider_val))
 line_width.grid(column=0, row=4, columnspan=2)
 
 # Sequences & Loops
-tk.Button(window, text="[ Sequence ]", command=set_sequence).grid(column=0, row=5)
-tk.Button(window, text="Replay", command=replay).grid(column=1, row=5)
+# tk.Button(window, text="[ Sequence ]", command=set_sequence).grid(column=0, row=5)
+tk.Button(window, text="Replay", command=replay).grid(column=2, row=6)
 
 
-iterations = tk.Spinbox(window, from_=1, to=10, command=iterate)
-iterations.grid(column=2, row=4)
+tk.Label(window, text="Iterations:").grid(column=2, row=4)
+iterations = tk.Spinbox(window, from_=1, to=10)
+iterations.grid(column=3, row=4)
+tk.Button(window, text="Set Iteration", command=set_iterations, bg="grey").grid(column=3, row=5)
+
+# tk.Button(window, text="Random button", command=set_iterations, bg="grey").grid(column=3, row=6)
+
+
+# Pause Menubutton
+pause_menu = Menubutton(window, text="Pause Duration (seconds)")
+pause_menu.grid(column=1, row=6)
+
+# create a menu 
+pause_menu.menu = Menu(pause_menu, tearoff=0)
+pause_menu["menu"] = pause_menu.menu
+
+pause_menu.menu.add_command(label="1 second", command=lambda: set_pause_duration(1))
+pause_menu.menu.add_command(label="2 seconds", command=lambda: set_pause_duration(2))
+pause_menu.menu.add_command(label="3 seconds", command=lambda: set_pause_duration(3))
+pause_menu.menu.add_command(label="5 seconds", command=lambda: set_pause_duration(5))
+pause_menu.menu.add_command(label="10 seconds", command=lambda: set_pause_duration(10))
+pause_menu.menu.add_command(label="100 seconds", command=lambda: set_pause_duration(100))
+
 
 # Go & clear_memory
-tk.Button(window, text="GO", command=go, bg="green").grid(column=2, row=6)
-tk.Button(window, text="CM", command=clear_memory, bg="red").grid(column=0, row=6)
+tk.Button(window, text="GO", command=go, bg="green").grid(column=3, row=2)
+tk.Button(window, text="CM", command=clear_memory, bg="red").grid(column=0, row=2)
 
 window.mainloop()
