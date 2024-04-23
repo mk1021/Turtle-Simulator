@@ -74,16 +74,22 @@ def go():
     go_flag = True
 
     # print('now in go function')
-
+    
     for command, *args in list_of_commands:
-        command(*args)
-        update_cursor()  
-        window.update_idletasks()
-        window.after(250)
+        
+        if command == iterate:
+            index=list_of_commands.index((command, *args))
+            iterate(*args, index)
+        else:
+            command(*args)
+            update_cursor()  
+            window.update_idletasks()
+            window.after(250)
 
     print(list_of_commands)
     go_flag = False
     # list_of_commands.clear()
+
 
 
 ## RESET VARIABLES
@@ -321,20 +327,35 @@ def replay():
     go()
 
 
+
 def set_iterations():
     num = int(iterations.get())
     print(num)
     store_command(iterate, num)
     print("storing iteration number", num)
-    return num
 
 
-def iterate(num_of_iterations):
-    reset_vars()
-    print("iterating")
+def iterate(num_of_iterations, index):
+    iterate_sequence = list_of_commands[:index]
+    # reset_vars()
+    # print("iterating")
+
+    print(num_of_iterations)
     if go_flag:
+
         for i in range(num_of_iterations):
-            go()
+            print(i)
+            
+            for command, *args in iterate_sequence:
+                
+                if command == iterate:
+                    break
+                
+                print(command)
+                command(*args)
+                update_cursor()  
+                window.update_idletasks()
+                window.after(250)
 
 
 ## PAUSE
@@ -359,6 +380,15 @@ def clear_memory():
     angles.clear()
     print('clear memory')
 
+
+## HELP MENUBAR
+
+def welcome_page():
+    pass
+
+def instructions():
+    pass
+
     
 ## BUTTONS
 
@@ -378,11 +408,11 @@ tk.Button(window, text="Change Color", command=store_color_command).grid(column=
 tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up", command=lambda: store_command(toggle_pen_state)).grid(column=3, row=6)
 
 # Choose Angle Input
-tk.Button(window, text="Angle:", command=set_angle).grid(column=2, row=3)
+tk.Button(window, text="Angle:", command=set_angle).grid(column=1, row=3)
 angle_entry = tk.Entry(window)
-angle_entry.grid(column=3, row=3)
+angle_entry.grid(column=2, row=3)
 
-tk.Button(window, text="Reset Orientation", command=reset_orientation).grid(column=0, row=3)
+# tk.Button(window, text="Reset Orientation", command=reset_orientation).grid(column=0, row=3)
 
 # Line Thickness Slider
 line_width = tk.Scale(window, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=lambda slider_val: store_command(change_line_width, slider_val))
@@ -433,8 +463,8 @@ file_menu.add_command(label="Save as", command=reset_vars)
 file_menu.add_command(label="Exit", command=window.quit)
 help_menu = Menu(menubar, tearoff=0)
 menubar.add_cascade(label="Help", menu=help_menu)
-# help_menu.add_command(label="Welcome", command=welcome_page)
-# help_menu.add_command(label="Instructions", command=instructions)
+help_menu.add_command(label="Welcome", command=welcome_page)
+help_menu.add_command(label="Instructions", command=instructions)
 # help_menu.add_command(label="Privacy Statement", command=placeholder)
 
 window.mainloop()
