@@ -41,7 +41,7 @@ current_orientation = 90
 
 # Initialise Cursor
 cursor_size = 4
-cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
+cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="dark green", outline="dark green")
 
 # Move Cursor
 def update_cursor():
@@ -343,7 +343,6 @@ def clear_memory():
 ## HELP MENUBAR
 
 def welcome_page():
-    # messagebox.showinfo("Welcome", "Welcome to the Turtle Simulator!\nPlease click the Instructions button to learn how to use this application.")
     welcome_page = tk.Toplevel(window)
     welcome_page.title("Welcome")
 
@@ -356,7 +355,6 @@ def welcome_page():
 
 
 def instructions():
-    # choose the angle then click turn right/left
     instructions_page = tk.Toplevel(window)
     instructions_page.title("Instructions: How to use the application")
 
@@ -371,7 +369,7 @@ def instructions():
     2. Rotation Control:
        - Enter an angle in degrees and click the 'Set Angle' button to specify the angle for turning left or right.
        - Then click the buttons (↰ and ↱) to turn left or right, respectively.
-       - Re-Enter the re-set the angle for each time the turn left or right buttons are used. 
+       - After clicking the button, the rotation angle is set back to 0, therefore please re-Enter the re-set the angle for each time the turn left or right buttons are used. 
 
     3. Change Line Color and Width:
        - The 'Change Color' button will let you choose a new line color.
