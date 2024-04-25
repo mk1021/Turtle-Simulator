@@ -4,6 +4,7 @@ from tkinter import *
 import math
 from tkinter import Menubutton, Menu
 
+
 ## INITIALISATION
 
 window = tk.Tk()
@@ -30,20 +31,16 @@ list_of_commands = []
 # Turning Left/Right
 angles = []
 
-# Storing Sequences
-sequence_list = []
-
-
 # Current Orientation (0: right, 90: up, 180: left, 270: down)
 current_orientation = 90
 
 
+#####################################################################################
 ## CURSROR
 
 # Initialise Cursor
 cursor_size = 4
 cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
-# canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 5, fill=current_line_color, width=1)
 
 # Move Cursor
 def update_cursor():
@@ -51,11 +48,13 @@ def update_cursor():
 
 
 
+#####################################################################################
 ## STORING COMMANDS
 
+# Store Command
 def store_command(command, *args):
     list_of_commands.append((command, *args))
-    print('Storing command:', command)
+    # print('Storing command:', command)
 
 # Store Change Color Command
 def store_color_command():
@@ -67,6 +66,8 @@ def store_color_command():
         store_command(change_line_color, new_color[1])
 
 
+
+#####################################################################################
 ## GO 
 
 def go():
@@ -86,12 +87,12 @@ def go():
             window.update_idletasks()
             window.after(250)
 
-    print(list_of_commands)
+    # print(list_of_commands)
     go_flag = False
-    # list_of_commands.clear()
 
 
 
+#####################################################################################
 ## RESET VARIABLES
 
 def reset_vars():
@@ -102,12 +103,12 @@ def reset_vars():
     current_line_width = 1
     line_width.set(1)
     angle_entry.delete(0, END)
-    # pen_state.set(0)
     canvas.delete("all") 
     cursor = canvas.create_oval(coords[0] - cursor_size, coords[1] - cursor_size, coords[0] + cursor_size, coords[1] + cursor_size, fill="red", outline="red")
 
 
 
+#####################################################################################
 ## LINE COLOR & THICKNESS
 
 # Change Line Color
@@ -124,20 +125,23 @@ def change_line_width(new_width):
 
     if go_flag:
         current_line_width = int(new_width)
-        print(current_line_width)
+        # print(current_line_width)
 
 
+
+#####################################################################################
 ## PEN UP/DOWN
 
 # Toggle Pen
 def toggle_pen_state():
     global pen_state
     
-    # store_command(toggle_pen_state)
     if go_flag:
         pen_state.set(1 - pen_state.get())
 
 
+
+#####################################################################################
 ## MOVEMENT CONTROLS
 
 # Move Up
@@ -147,7 +151,6 @@ def move_up():
             canvas.create_line(coords[0], coords[1], coords[0], coords[1] - 10, fill=current_line_color, width=current_line_width)
         # coords[1] += 10
         coords[1] -= 10
-        # update_cursor()
         
 
 # Move Down
@@ -157,9 +160,7 @@ def move_down():
             canvas.create_line(coords[0], coords[1], coords[0], coords[1] + 10, fill=current_line_color, width=current_line_width)
         # coords[1] -= 10
         coords[1] += 10
-        # update_cursor()
-
-    
+        
 
 # Move Left
 def move_left():
@@ -167,8 +168,6 @@ def move_left():
         if pen_state.get() == 1:
             canvas.create_line(coords[0], coords[1], coords[0] - 10, coords[1], fill=current_line_color, width=current_line_width)
         coords[0] -= 10
-        # update_cursor()
-
     
 
 # Move Right
@@ -177,8 +176,6 @@ def move_right():
         if pen_state.get() == 1:
             canvas.create_line(coords[0], coords[1], coords[0] + 10, coords[1], fill=current_line_color, width=current_line_width)
         coords[0] += 10
-        # update_cursor()
-
 
 
 # Reset Orientation 
@@ -191,9 +188,9 @@ def reset_orientation():
 def set_angle():
     rotation_angle_str = angle_entry.get()
     rotation_angle = int(rotation_angle_str)
-    #print(rotation_angle)
+    # print(rotation_angle)
     angles.append(rotation_angle)
-    print(angles)
+    # print(angles)
     angle_entry.delete(0, END)
 
 
@@ -206,27 +203,27 @@ def set_orientation(trig_angle, coords):
     if trig_angle == 90:
         # move up
         move_up()
-        print("move up")
+        # print("move up")
 
     elif trig_angle == 180:
         # move left
         move_left()
-        print("move left")
+        # print("move left")
 
     elif trig_angle == 270:
         # move down
         move_down()
-        print("move down")
+        # print("move down")
 
     elif trig_angle == 360 or trig_angle == 0:
         # move right
         move_right()
-        print("move right") 
+        # print("move right") 
     
 
     elif 0 < trig_angle < 90:
         # first quadrant
-        print("first quadrant")
+        # print("first quadrant")
         a = trig_angle
         # - in y
         y_end = coords[1] - (10 * math.sin(math.radians(a)))
@@ -235,7 +232,7 @@ def set_orientation(trig_angle, coords):
     
     elif 90 < trig_angle < 180:
         # second quadrant
-        print("second quadrant")
+        # print("second quadrant")
         a = trig_angle - 90
         # - in y
         y_end = coords[1] - (10 * math.cos(math.radians(a)))
@@ -244,7 +241,7 @@ def set_orientation(trig_angle, coords):
         
     elif 180 < trig_angle < 270:
         # third quadrant
-        print("third quadrant")
+        # print("third quadrant")
         a = trig_angle - 180
         # + in y
         y_end = coords[1] + (10 * math.sin(math.radians(a)))
@@ -253,27 +250,24 @@ def set_orientation(trig_angle, coords):
 
     elif 270 < trig_angle < 360:
         # fourth quadrant
-        print("fourth quadrant")
+        # print("fourth quadrant")
         a = trig_angle - 270
-        print(a)
+        # print(a)
         # + in y
         y_end = coords[1] + (10 * math.cos(math.radians(a)))
-        print(y_end)
+        # print(y_end)
         # + in x
         x_end = coords[0] + (10 * math.sin(math.radians(a)))
-        print(10 * math.sin(math.radians(a)))
-        print(x_end)
+        # print(10 * math.sin(math.radians(a)))
+        # print(x_end)
 
     return x_end, y_end
+
 
 # Turn Left
 def turn_left():
     global current_orientation
-    # choose the angle then click turn left
-    # angles = set_angle()
-    # current_orientation += angle - this is right but have to implement more stuff before using it
-    # print(current_orientation)
-    print("turning left")
+    # print("turning left")
 
     if go_flag:
         x, y = set_orientation(current_orientation + angles[0], coords)
@@ -284,18 +278,13 @@ def turn_left():
         coords[1] = y
 
         angles.append(angles.pop(0))
-        print(angles)
-
+        # print(angles)
 
 
 # Turn Right
 def turn_right():
     global current_orientation
-    # choose the angle then click turn right
-    # angles = set_angle()
-    # current_orientation -= angle
-    # print(current_orientation)
-    print("turning right")
+    # print("turning right")
 
     if go_flag:
         x, y = set_orientation(current_orientation - angles[0], coords)
@@ -306,19 +295,12 @@ def turn_right():
         coords[1] = y
 
         angles.append(angles.pop(0))
-        print(angles)
+        # print(angles)
 
 
 
-## SEQUENCING AND LOOPS
-
-# Sequences
-def set_sequence():
-    global sequence_list
-    
-    # append every button pressed into list
-
-    pass
+#####################################################################################
+## ITERATIONS & LOOPS
 
 # Loops
 def replay():
@@ -327,43 +309,46 @@ def replay():
     go()
 
 
-
+# Iterations
 def set_iterations():
     num = int(iterations.get())
-    print(num)
+    # print(num)
     store_command(iterate, num)
-    print("storing iteration number", num)
+    # print("storing iteration number", num)
 
 
 def iterate(num_of_iterations, index):
+    global current_line_color, current_line_width
     iterate_sequence = list_of_commands[:index]
-    # reset_vars()
     # print("iterating")
 
-    print(num_of_iterations)
+    # print(num_of_iterations)
     if go_flag:
 
-        for i in range(num_of_iterations):
-            print(i)
+        for i in range(num_of_iterations-1):
+            # print(i)
+            current_line_color = "black"
+            current_line_width = 1
+            line_width.set(1)
             
             for command, *args in iterate_sequence:
-                
                 if command == iterate:
-                    break
+                    continue
                 
-                print(command)
+                # print(command)
                 command(*args)
                 update_cursor()  
                 window.update_idletasks()
                 window.after(250)
 
 
+
+#####################################################################################
 ## PAUSE
 
 def pause(seconds):
     into_ms = seconds * 1000
     window.after(into_ms)
-
 
 # Select Pause Duration
 def set_pause_duration(seconds):
@@ -372,25 +357,32 @@ def set_pause_duration(seconds):
 
 
 
+#####################################################################################
 ## CLEAR MEMORY
 
 def clear_memory():
     reset_vars()
     list_of_commands.clear()
     angles.clear()
-    print('clear memory')
+    # print('clear memory')
 
 
+
+#####################################################################################
 ## HELP MENUBAR
 
 def welcome_page():
     pass
 
 def instructions():
+    # choose the angle then click turn right/left
+    # choose 2 angles then click arc
     pass
 
-    
-## BUTTONS
+
+
+#####################################################################################    
+## BUTTONS 
 
 # Movement Controls
 tk.Button(window, text="↑", command=lambda: store_command(move_up)).grid(column=0, row=1)
@@ -404,32 +396,25 @@ tk.Button(window, text="↱", command=lambda: store_command(turn_right)).grid(co
 tk.Button(window, text="Change Color", command=store_color_command).grid(column=0, row=6)
 
 # Pen Up/Down
-# tk.Button(window, text="Pen Up/Down", command=toggle_pen).grid(column=1, row=3)
 tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up", command=lambda: store_command(toggle_pen_state)).grid(column=3, row=6)
 
 # Choose Angle Input
-tk.Button(window, text="Angle:", command=set_angle).grid(column=1, row=3)
+tk.Button(window, text="Angle:", command=set_angle).grid(column=0, row=3)
 angle_entry = tk.Entry(window)
-angle_entry.grid(column=2, row=3)
-
-# tk.Button(window, text="Reset Orientation", command=reset_orientation).grid(column=0, row=3)
+angle_entry.grid(column=1, row=3)
 
 # Line Thickness Slider
 line_width = tk.Scale(window, from_=1, to=10, orient=tk.HORIZONTAL, label="Line Width", command=lambda slider_val: store_command(change_line_width, slider_val))
 line_width.grid(column=0, row=4, columnspan=2)
 
-# Sequences & Loops
-# tk.Button(window, text="[ Sequence ]", command=set_sequence).grid(column=0, row=5)
+# Replay
 tk.Button(window, text="Replay", command=replay).grid(column=2, row=6)
 
-
+# Iterations (Loops)
 tk.Label(window, text="Iterations:").grid(column=2, row=4)
 iterations = tk.Spinbox(window, from_=1, to=10)
 iterations.grid(column=3, row=4)
 tk.Button(window, text="Set Iteration", command=set_iterations, bg="grey").grid(column=3, row=5)
-
-# tk.Button(window, text="Random button", command=set_iterations, bg="grey").grid(column=3, row=6)
-
 
 # Pause Menubutton
 pause_menu = Menubutton(window, text="Pause Duration (seconds)")
@@ -438,7 +423,6 @@ pause_menu.grid(column=1, row=6)
 # create a menu 
 pause_menu.menu = Menu(pause_menu, tearoff=0)
 pause_menu["menu"] = pause_menu.menu
-
 pause_menu.menu.add_command(label="1 second", command=lambda: set_pause_duration(1))
 pause_menu.menu.add_command(label="2 seconds", command=lambda: set_pause_duration(2))
 pause_menu.menu.add_command(label="3 seconds", command=lambda: set_pause_duration(3))
@@ -446,12 +430,14 @@ pause_menu.menu.add_command(label="5 seconds", command=lambda: set_pause_duratio
 pause_menu.menu.add_command(label="10 seconds", command=lambda: set_pause_duration(10))
 pause_menu.menu.add_command(label="100 seconds", command=lambda: set_pause_duration(100))
 
-
 # Go & clear_memory
 tk.Button(window, text="GO", command=go, bg="green").grid(column=3, row=2)
-tk.Button(window, text="CM", command=clear_memory, bg="red").grid(column=0, row=2)
+tk.Button(window, text="CM", command=clear_memory, bg="red").grid(column=3, row=3)
 
-# Menu Bar
+
+
+##########################################################################################
+## MENUBAR
 menubar = Menu(window)
 window.config(menu=menubar)
 
@@ -461,10 +447,16 @@ menubar.add_cascade(label="File", menu=file_menu)
 file_menu.add_command(label="New", command=reset_vars)
 file_menu.add_command(label="Save as", command=reset_vars)
 file_menu.add_command(label="Exit", command=window.quit)
+
+# Help Menu 
 help_menu = Menu(menubar, tearoff=0)
 menubar.add_cascade(label="Help", menu=help_menu)
 help_menu.add_command(label="Welcome", command=welcome_page)
 help_menu.add_command(label="Instructions", command=instructions)
-# help_menu.add_command(label="Privacy Statement", command=placeholder)
+
+
+
+##########################################################################
+## MAIN
 
 window.mainloop()
