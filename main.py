@@ -3,6 +3,7 @@ from tkinter import colorchooser
 from tkinter import *
 import math
 from tkinter import Menubutton, Menu
+from tkinter import messagebox
 
 
 ## INITIALISATION
@@ -54,15 +55,12 @@ def update_cursor():
 # Store Command
 def store_command(command, *args):
     list_of_commands.append((command, *args))
-    # print('Storing command:', command)
 
 # Store Change Color Command
 def store_color_command():
     new_color = colorchooser.askcolor(title="Choose color")
-    # print("New Color:", new_color)
 
     if new_color[1]:
-        # print("storing colour")
         store_command(change_line_color, new_color[1])
 
 
@@ -73,8 +71,6 @@ def store_color_command():
 def go():
     global go_flag
     go_flag = True
-
-    # print('now in go function')
     
     for command, *args in list_of_commands:
         
@@ -87,7 +83,6 @@ def go():
             window.update_idletasks()
             window.after(250)
 
-    # print(list_of_commands)
     go_flag = False
 
 
@@ -116,7 +111,6 @@ def change_line_color(new_color):
     global current_line_color
 
     if go_flag:
-        # print(new_color)
         current_line_color = new_color
 
 
@@ -125,7 +119,6 @@ def change_line_width(new_width):
 
     if go_flag:
         current_line_width = int(new_width)
-        # print(current_line_width)
 
 
 
@@ -188,9 +181,7 @@ def reset_orientation():
 def set_angle():
     rotation_angle_str = angle_entry.get()
     rotation_angle = int(rotation_angle_str)
-    # print(rotation_angle)
     angles.append(rotation_angle)
-    # print(angles)
     angle_entry.delete(0, END)
 
 
@@ -203,27 +194,22 @@ def set_orientation(trig_angle, coords):
     if trig_angle == 90:
         # move up
         move_up()
-        # print("move up")
 
     elif trig_angle == 180:
         # move left
         move_left()
-        # print("move left")
 
     elif trig_angle == 270:
         # move down
         move_down()
-        # print("move down")
 
     elif trig_angle == 360 or trig_angle == 0:
         # move right
-        move_right()
-        # print("move right") 
+        move_right() 
     
 
     elif 0 < trig_angle < 90:
         # first quadrant
-        # print("first quadrant")
         a = trig_angle
         # - in y
         y_end = coords[1] - (10 * math.sin(math.radians(a)))
@@ -232,7 +218,6 @@ def set_orientation(trig_angle, coords):
     
     elif 90 < trig_angle < 180:
         # second quadrant
-        # print("second quadrant")
         a = trig_angle - 90
         # - in y
         y_end = coords[1] - (10 * math.cos(math.radians(a)))
@@ -241,7 +226,6 @@ def set_orientation(trig_angle, coords):
         
     elif 180 < trig_angle < 270:
         # third quadrant
-        # print("third quadrant")
         a = trig_angle - 180
         # + in y
         y_end = coords[1] + (10 * math.sin(math.radians(a)))
@@ -250,16 +234,12 @@ def set_orientation(trig_angle, coords):
 
     elif 270 < trig_angle < 360:
         # fourth quadrant
-        # print("fourth quadrant")
         a = trig_angle - 270
-        # print(a)
         # + in y
         y_end = coords[1] + (10 * math.cos(math.radians(a)))
-        # print(y_end)
         # + in x
         x_end = coords[0] + (10 * math.sin(math.radians(a)))
-        # print(10 * math.sin(math.radians(a)))
-        # print(x_end)
+
 
     return x_end, y_end
 
@@ -267,7 +247,6 @@ def set_orientation(trig_angle, coords):
 # Turn Left
 def turn_left():
     global current_orientation
-    # print("turning left")
 
     if go_flag:
         x, y = set_orientation(current_orientation + angles[0], coords)
@@ -278,13 +257,11 @@ def turn_left():
         coords[1] = y
 
         angles.append(angles.pop(0))
-        # print(angles)
 
 
 # Turn Right
 def turn_right():
     global current_orientation
-    # print("turning right")
 
     if go_flag:
         x, y = set_orientation(current_orientation - angles[0], coords)
@@ -295,7 +272,6 @@ def turn_right():
         coords[1] = y
 
         angles.append(angles.pop(0))
-        # print(angles)
 
 
 
@@ -312,21 +288,17 @@ def replay():
 # Iterations
 def set_iterations():
     num = int(iterations.get())
-    # print(num)
     store_command(iterate, num)
-    # print("storing iteration number", num)
 
 
 def iterate(num_of_iterations, index):
     global current_line_color, current_line_width
     iterate_sequence = list_of_commands[:index]
-    # print("iterating")
 
-    # print(num_of_iterations)
     if go_flag:
 
         for i in range(num_of_iterations-1):
-            # print(i)
+
             current_line_color = "black"
             current_line_width = 1
             line_width.set(1)
@@ -335,7 +307,6 @@ def iterate(num_of_iterations, index):
                 if command == iterate:
                     continue
                 
-                # print(command)
                 command(*args)
                 update_cursor()  
                 window.update_idletasks()
@@ -372,12 +343,70 @@ def clear_memory():
 ## HELP MENUBAR
 
 def welcome_page():
-    pass
+    # messagebox.showinfo("Welcome", "Welcome to the Turtle Simulator!\nPlease click the Instructions button to learn how to use this application.")
+    welcome_page = tk.Toplevel(window)
+    welcome_page.title("Welcome")
+
+    welcome_message = "Welcome to the Turtle Graphics Application!\nPlease click the Instructions button to learn how to use this application."
+    tk.Label(welcome_page, text=welcome_message, padx=20, pady=20).pack()
+
+    tk.Button(welcome_page, text="Instructions", command=instructions).pack()
+    tk.Button(welcome_page, text="Close", command=welcome_page.destroy).pack()
+
+
 
 def instructions():
     # choose the angle then click turn right/left
-    # choose 2 angles then click arc
-    pass
+    instructions_page = tk.Toplevel(window)
+    instructions_page.title("Instructions: How to use the application")
+
+    instructions_text = """
+    Welcome to the Turtle Graphics Application!
+
+    Instructions:
+    
+    1. Movement Controls:
+       - Use the arrow buttons (↑, ↓, ←, →) to move the turtle cursor in the respective direction.
+    
+    2. Rotation Control:
+       - Enter an angle in degrees and click the 'Set Angle' button to specify the angle for turning left or right.
+       - Then click the buttons (↰ and ↱) to turn left or right, respectively.
+       - Re-Enter the re-set the angle for each time the turn left or right buttons are used. 
+
+    3. Change Line Color and Width:
+       - The 'Change Color' button will let you choose a new line color.
+       - Adjust the 'Line Width' slider to change the width of the lines.
+
+    4. Pen Up/Down:
+       - Use the 'Pen Up' checkbox to toggle and control whether the turtle draws lines as it moves.
+
+    5. Iterations (Loops):
+       - Enter the number of iterations in the 'Iterations' Spinbox and click 'Set Iteration' to repeat a sequence of commands.
+
+    6. Replay:
+       - Click the 'Replay' button to see the application draw your drawing again.
+
+    7. Pause Duration:
+       - By clicking the 'Pause Duration' button, there'll be a drop menu to select the duration for pausing the execution of commands.
+
+    8. Go:
+       - Once all commands have been added, click the green 'Go' button to see the application draw!
+    
+    9. Clear Memory:
+       - Entered your commands in wrong? Just Click the red clear memory ('CM') button to clear the instructions and start again.
+       - Be sure to click the 'CM' button before you start. 
+
+    10. Using Menus:
+       - Explore the 'File' menu for options like New, and Exit.
+       - The 'Help' menu provides access to the Welcome message and these instructions.
+
+
+    Enjoy creating your drawings!
+    """
+
+    tk.Label(instructions_page, text=instructions_text, padx=20, pady=20, justify="left").pack()
+
+    tk.Button(instructions_page, text="I understand", command=instructions_page.destroy).pack()
 
 
 
@@ -399,7 +428,7 @@ tk.Button(window, text="Change Color", command=store_color_command).grid(column=
 tk.Checkbutton(window, onvalue=1, offvalue=0, height=2, width=10, text="Pen Up", command=lambda: store_command(toggle_pen_state)).grid(column=3, row=6)
 
 # Choose Angle Input
-tk.Button(window, text="Angle:", command=set_angle).grid(column=0, row=3)
+tk.Button(window, text="Set Angle:", command=set_angle).grid(column=0, row=3)
 angle_entry = tk.Entry(window)
 angle_entry.grid(column=1, row=3)
 
@@ -445,7 +474,6 @@ window.config(menu=menubar)
 file_menu = Menu(menubar, tearoff=0)
 menubar.add_cascade(label="File", menu=file_menu)
 file_menu.add_command(label="New", command=reset_vars)
-file_menu.add_command(label="Save as", command=reset_vars)
 file_menu.add_command(label="Exit", command=window.quit)
 
 # Help Menu 
