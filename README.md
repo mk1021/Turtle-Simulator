@@ -2,10 +2,9 @@
 
 ## Contents
 
-[Description](#description)
-[Installation](#installation)
-[Controls](#controls)
-[Commands](#commands)
+1. [Description](#description)
+2. [Installation](#installation)
+3. [Controls](#controls)
 
 <!-- SECTION 1 -->
 ## Description
@@ -64,5 +63,3 @@ Welcome to the Turtle Graphics Application! Read through all the Instructions be
        - Explore the 'File' menu for options like New, and Exit.
        - The 'Help' menu provides access to the Welcome message and these instructions.
 
-
-    Enjoy creating your drawings!
